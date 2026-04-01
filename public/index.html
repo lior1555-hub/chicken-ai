@@ -1,1 +1,42 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>AI לעופות</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
 
+<body class="bg-gray-100 p-10">
+
+<div class="max-w-xl mx-auto bg-white p-6 rounded shadow">
+    <h1 class="text-xl font-bold mb-4 text-right">🤖 ייעוץ עופות</h1>
+
+    <textarea id="q" class="w-full border p-3 rounded text-right"></textarea>
+
+    <button onclick="ask()" class="mt-3 bg-blue-600 text-white px-4 py-2 rounded">
+        שאל
+    </button>
+
+    <div id="a" class="mt-4 text-right"></div>
+</div>
+
+<script>
+async function ask(){
+    const q = document.getElementById("q").value;
+    const a = document.getElementById("a");
+
+    a.innerText = "טוען...";
+
+    const res = await fetch("/ask", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({ question:q })
+    });
+
+    const data = await res.json();
+    a.innerText = data.answer || data.error;
+}
+</script>
+
+</body>
+</html>
